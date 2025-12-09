@@ -1,0 +1,22 @@
+SELECT
+    TRIM(mois) AS mois,
+    TRIM(trimestre_x) AS trimestre_x,
+    TRIM(trimestre_y) AS trimestre_y,
+    CAST(taux_chomage AS FLOAT) AS taux_chomage,
+    CAST(croissance_pib_trim AS FLOAT) AS croissance_pib_trim,
+    CAST(indice_confiance AS FLOAT) AS indice_confiance,
+    CAST(inflation AS FLOAT) AS inflation,
+    CAST(nb_offres_it AS INT) AS nb_offres_it,
+    CAST(salaire_median_it AS INT) AS salaire_median_it,
+    CAST(demande_competences_rares AS FLOAT) AS demande_competences_rares,
+    CAST(tension_recrutement AS FLOAT) AS tension_recrutement,
+    CAST(nb_concurrents_actifs AS INT) AS nb_concurrents_actifs,
+    CAST(ecart_salarial_marche AS FLOAT) AS ecart_salarial_marche,
+    CAST(attractivite_relative AS FLOAT) AS attractivite_relative,
+    CAST(activite_chasseurs_tetes AS FLOAT) AS activite_chasseurs_tetes,
+    CAST(periode_recrutement_forte AS BOOLEAN) AS periode_recrutement_forte,
+    CAST(periode_evaluations AS BOOLEAN) AS periode_evaluations,
+    CAST(periode_promotions AS BOOLEAN) AS periode_promotions,
+    CAST(periode_recrutement AS BOOLEAN) AS periode_recrutement,
+    CAST(periode_departs_eleves AS BOOLEAN) AS periode_departs_eleves
+FROM {{ source('entreprise','donnees_contextuelles') }}

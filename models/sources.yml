@@ -1,0 +1,95 @@
+version: 2
+
+# =========================================================
+# 1. DATA SET : INDIVIDUS (Clé principale : employee_id)
+# =========================================================
+
+sources:
+  - name: individus  
+    description: "Données agregées concernant les employés."
+    schema: individus         
+    tables:
+      - name: donnees_rh        
+        description: Table RH brute.
+        columns:
+          - name: employee_id
+            tests:
+              - unique
+              - not_null
+          - name: salaire_annuel
+            tests:
+              - not_null
+
+      - name: historique_carriere
+        description: "Historique des évolutions par employé"
+        columns:
+          - name: employee_id
+            tests:
+              - unique
+              - not_null
+
+      - name: absenteisme
+        description: "la table des absenteismes par employé"
+        columns:
+          - name: employee_id
+            tests:
+              - not_null
+
+      - name: enquete_satisfaction
+        description: "table des scores des employés"
+        columns:
+          - name: employee_id
+            tests:
+              - not_null
+          - name: date_enquete
+            tests:
+              - not_null
+
+      - name: feedback_360
+        description: "table des retours sur les employés"
+        columns:
+          - name: mois
+            tests:
+              - unique
+              - not_null
+
+# =========================================================
+# 2. DATA SET : ENTREPRISE (Clé principale : mois ou date)
+# =========================================================
+  - name: entreprise 
+    description: "Données agrégées, contextuelles et coûts au niveau de l'entreprise."
+    schema: entreprise 
+    
+    tables:
+      - name: historique_mensuel_2020_2024
+        description: "analyse mensuelle de la santé rh et des coûts liés"
+        columns:
+          - name: mois
+            tests:
+              - unique
+              - not_null
+          - name: effectif
+            tests:
+              - not_null
+
+      - name: cohorte_embauche
+        description: "Nombre d'embauches mensuelles et taux de rétention"
+        columns:
+          - name: mois
+            tests:
+              - unique
+              - not_null
+
+      - name: donnees_contextuelles
+        description: "Données sociétales"
+        columns:
+          - name: mois
+            tests:
+              - unique
+              - not_null
+
+      - name: evenements_entreprises
+        description: "Evènements structurants de l'entreprise et impacts"
+
+      - name: evenements_historique_2020_2024
+        description: "Impacts globaux des évènements"

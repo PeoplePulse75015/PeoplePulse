@@ -5,9 +5,10 @@ version: 2
 # =========================================================
 
 sources:
-  - name: individus  
+  - name: peoplepulse_data
     description: "Données agregées concernant les employés."
-    schema: individus         
+    database: peoplepulse-480613
+    schema: individus
     tables:
       - name: donnees_rh        
         description: Table RH brute.
@@ -35,7 +36,7 @@ sources:
             tests:
               - not_null
 
-      - name: enquete_satisfaction
+      - name: enquetes_satisfaction
         description: "table des scores des employés"
         columns:
           - name: employee_id
@@ -48,7 +49,7 @@ sources:
       - name: feedback_360
         description: "table des retours sur les employés"
         columns:
-          - name: mois
+          - name: employee_id
             tests:
               - unique
               - not_null
@@ -56,9 +57,10 @@ sources:
 # =========================================================
 # 2. DATA SET : ENTREPRISE (Clé principale : mois ou date)
 # =========================================================
-  - name: entreprise 
+  - name: company_metadata
     description: "Données agrégées, contextuelles et coûts au niveau de l'entreprise."
-    schema: entreprise 
+    database: peoplepulse-480613
+    schema: entreprise
     
     tables:
       - name: historique_mensuel_2020_2024
@@ -72,10 +74,10 @@ sources:
             tests:
               - not_null
 
-      - name: cohorte_embauche
+      - name: cohortes_embauche
         description: "Nombre d'embauches mensuelles et taux de rétention"
         columns:
-          - name: mois
+          - name: mois_embauche
             tests:
               - unique
               - not_null
@@ -88,8 +90,18 @@ sources:
               - unique
               - not_null
 
-      - name: evenements_entreprises
+      - name: evenements_entreprise
         description: "Evènements structurants de l'entreprise et impacts"
+        columns:
+          - name: date
+            tests:
+              - unique
+              - not_null
 
-      - name: evenements_historique_2020_2024
+      - name: evenements_historiques_2020_2024
         description: "Impacts globaux des évènements"
+        columns:
+          - name: date
+            tests:
+              - unique
+              - not_null

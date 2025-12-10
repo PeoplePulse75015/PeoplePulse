@@ -1,27 +1,27 @@
-SELECT
-    employee_id, 
-    anciennete_annees, 
+WITH calcul_base AS (       --  --> 1ère requête pour calculer l'ancienneté
+    SELECT
+        employee_id,
+        anciennete_annees,
+                            --  --> Pour calculer l'ancienneté, on transforme en FLOAT64, avec arrondi et SAFE_CAST pour le lien avec BigQuery, qu'il puisse gérer l'erreur (si valeur, alors valeur, sinon NULL)
+        CAST(ROUND(SAFE_CAST(anciennete_annees AS FLOAT64) * 12) AS INT64) AS anciennete_mois_valeur,
+                            
+                            -- --> ici, on met la date d'extraction des données pour jalon de calcul
+        PARSE_DATE('%Y-%m-%d', '2024-11-01') AS date_extraction 
+    FROM {{ source('peoplepulse_data', 'donnees_rh') }}
+)
 
-    -- Conversion de la colonne en FLOAT64 pour l'utiliser dans la multiplication
-    {% set anciennete_float = "SAFE_CAST(anciennete_annees AS FLOAT64)" %}
-
-    -- 1. Calcul du nombre de mois d'ancienneté (en utilisant la valeur convertie)
-    CAST(ROUND({{ anciennete_float }} * 12) AS INT64) AS anciennete_mois,
-    
-    -- 2. Date de référence : 2024-11
-    PARSE_DATE('%Y-%m-%d', '2024-11-01') AS date_extraction,
-
-    -- Définition du nombre de mois calculé pour la lisibilité
-    {% set anciennete_mois_calcul = "CAST(ROUND(SAFE_CAST(anciennete_annees AS FLOAT64) * 12) AS INT64)" %}
-
-    -- 3. Soustraction du nombre de mois d'ancienneté de la date de référence.
-    DATE_TRUNC(
-        DATE_SUB(
-            PARSE_DATE('%Y-%m-%d', '2024-11-01'), 
-            INTERVAL {{ anciennete_mois_calcul }} MONTH
-        ), 
-        MONTH
-    ) AS date_embauche
-
-FROM 
-    {{ source('peoplepulse_data', 'donnees_rh') }}
+SELECT                      --  --> Requête qui utilisera la 1ère pour calculer la date d'embauche
+    employee_id,
+    anciennete_annees,
+    anciennete_mois_valeur AS anciennete_mois,
+    date_extraction,
+    --  --> DATE_SUB va calculer l'ancienneté entre la date de référence et l'ancienneté (déclarée en VALEUR MOIS grâce à INTERVAL)
+    --  --> DATE_TRUNC va permettre de tronquer le résultat de DATE_SUB au début du mois grâce à MONTH 
+    DATE_TRUNC(
+        DATE_SUB(
+            date_extraction, 
+            INTERVAL anciennete_mois_valeur MONTH
+        ), 
+        MONTH
+    ) AS date_embauche
+FROM calcul_base

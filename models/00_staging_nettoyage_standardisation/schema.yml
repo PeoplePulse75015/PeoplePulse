@@ -1,0 +1,98 @@
+version: 2
+
+models:
+  # =========================================================
+  # 1. DATA SET : INDIVIDUS 
+  # =========================================================
+
+  - name: 00_transfo_donnees_rh 
+    description: "Données de base RH nettoyées (âge, poste, salaire). La clé primaire (PK) est l'ID de l'employé."
+    columns:
+      - name: employee_id
+        description: "Clé primaire unique de l'employé."
+        tests:
+          - unique
+          - not_null
+
+  - name: 01_transfo_historique_carriere 
+    description: "Historique des promotions, mobilités et évolutions salariales."
+    columns:
+      - name: employee_id
+        description: "Clé primaire unique de l'employé."
+        tests:
+          - unique
+          - not_null
+
+  - name: 02_transfo_absenteisme 
+    description: "Données d'absentéisme par employé."
+    columns:
+      - name: employee_id
+        description: "Clé primaire unique de l'employé."
+        tests:
+          - unique
+          - not_null
+
+  - name: 03_transfo_enquete_satisfaction # (clé composée pour 1 employé pour 1 date)
+    description: "Scores d'enquêtes de satisfaction (sentiment, NPS). Une enquête par employé par date."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - employee_id
+            - date_enquete # 1 employé ne peut avoir qu'1 réponse par date
+
+  - name: 04_transfo_feedback360 # (clé composée pour 1 employé pour 1 date)
+    description: "Scores de feedback 360 (compétences, leadership) par évaluation."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - employee_id
+            - date_evaluation # 1 employé ne peut avoir qu'1 seule évaluation par date
+    
+  # =========================================================
+  # 2. DATA SET : ENTREPRISE (Granularité par Période)
+  # =========================================================
+  
+  - name: 05_transfo_histo_mensuel_20_24 
+    description: "Métriques macro RH et coûts (effectif, turnover) agrégées au mois."
+    columns:
+      - name: mois_histo 
+        description: "Clé primaire unique par mois/année."
+        tests:
+          - unique
+          - not_null
+
+  - name: 06_transfo_cohorte
+    description: "Taux de rétention par cohorte d'embauche."
+    columns:
+      - name: mois_embauche 
+        description: "Clé primaire unique (mois d'embauche)."
+        tests:
+          - unique
+          - not_null
+  
+  - name: 07_transfo_donnees_contextuelles
+    description: "Données macroéconomiques et marché du travail liées à la période."
+    columns:
+      - name: mois_contexte 
+        description: "Clé primaire unique basée sur le mois d'observation."
+        tests:
+          - unique
+          - not_null
+
+  - name: 08_transfo_evenements_entreprise 
+    description: "Événements internes structurants de l'entreprise (ex: fusion, acquisition, changement de politique)."
+    columns:
+      - name: date_evenement 
+        description: "Clé primaire unique (date de l'événement)."
+        tests:
+          - unique
+          - not_null
+
+  - name: 09_transfo_evenements_historiques 
+    description: "Impacts agrégés des événements historiques sur le moral/turnover."
+    columns:
+      - name: date_evenement_historique
+        description: "Date de l'événement historique."
+        tests:
+          - unique
+          - not_null

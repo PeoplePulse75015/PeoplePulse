@@ -40,3 +40,20 @@ models:
     # Applies to all files under models/example/
     example:
       +materialized: table
+    '00_staging_nettoyage_standardisation':
+      # Schéma par défaut pour ce répertoire (majoritairement 'individus')
+      +schema: individus
+      
+      # Exceptions : Modèles qui travaillent avec des données "entreprise"
+      05_transfo_histo_mensuel_20_24:
+        +schema: entreprise
+      06_transfo_cohorte:
+        +schema: entreprise
+      07_transfo_donnees_contextuelles:
+        +schema: entreprise
+      08_transfo_evenements_entreprise:
+        +schema: entreprise
+      09_transfo_evenements_historiques:
+        +schema: entreprise
+      10_Count_doublons:
+        +schema: entreprise

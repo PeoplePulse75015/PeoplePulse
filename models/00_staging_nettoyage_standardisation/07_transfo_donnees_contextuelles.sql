@@ -15,28 +15,28 @@ SELECT
     CAST(attractivite_relative AS FLOAT64) AS attractivite_relative,
     CAST(activite_chasseurs_tetes AS FLOAT64) AS activite_chasseurs_tetes,
     CASE
-        WHEN periode_recrutement_forte IN ('1') THEN TRUE
-        WHEN periode_recrutement_forte IN ('0') THEN FALSE
+        WHEN periode_recrutement_forte IN (1) THEN TRUE
+        WHEN periode_recrutement_forte IN (0) THEN FALSE
         ELSE NULL
     END AS periode_recrutement_forte,
     CASE
-        WHEN periode_evaluations IN ('1') THEN TRUE
-        WHEN periode_evaluations IN ('0') THEN FALSE
+        WHEN periode_evaluations IN (1) THEN TRUE
+        WHEN periode_evaluations IN (0) THEN FALSE
         ELSE NULL
     END AS periode_evaluations,
     CASE
-        WHEN periode_promotions IN ('1') THEN TRUE
-        WHEN periode_promotions IN ('0') THEN FALSE
+        WHEN periode_promotions IN (1) THEN TRUE
+        WHEN periode_promotions IN (0) THEN FALSE
         ELSE NULL
     END AS periode_promotions,
     CASE
-        WHEN periode_recrutement IN ('1') THEN TRUE
-        WHEN periode_recrutement IN ('0') THEN FALSE
+        WHEN periode_recrutement IN (1) THEN TRUE
+        WHEN periode_recrutement IN (0) THEN FALSE
         ELSE NULL
     END AS periode_recrutement,
     CASE
-        WHEN periode_departs_eleves IN ('1') THEN TRUE
-        WHEN periode_departs_eleves IN ('0') THEN FALSE
+        WHEN periode_departs_eleves IN (1) THEN TRUE
+        WHEN periode_departs_eleves IN (0) THEN FALSE
         ELSE NULL
     END AS periode_departs_eleves
 FROM {{ source('company_metadata','donnees_contextuelles') }}

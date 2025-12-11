@@ -38,12 +38,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   my_new_project:
     # Applies to all files under models/example/
-    example:
-      +materialized: table
     '00_staging_nettoyage_standardisation':
       # Schéma par défaut pour ce répertoire (majoritairement 'individus')
       +schema: individus
-      
       # Exceptions : Modèles qui travaillent avec des données "entreprise"
       05_transfo_histo_mensuel_20_24:
         +schema: entreprise
@@ -57,3 +54,18 @@ models:
         +schema: entreprise
       10_Count_doublons:
         +schema: entreprise
+
+    '01_intermediate_join_calculs':
+      +schema: individus
+      # Exceptions : Modèles qui travaillent avec des données "entreprise"
+      02_Join_table_historique_contexte:
+        +schema: entreprise
+      03_Union_evenements:
+        +schema: entreprise
+
+
+    '02_marts_modeles_agreges_BI' : 
+      +schema: peoplepulse
+
+
+    

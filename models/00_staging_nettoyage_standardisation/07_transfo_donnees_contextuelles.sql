@@ -1,3 +1,6 @@
+{{ config(
+    materialized='view'
+) }}
 SELECT
     TRIM(mois) AS mois_contexte,
     TRIM(trimestre_x) AS trimestre_x,

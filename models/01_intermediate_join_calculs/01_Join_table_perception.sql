@@ -1,8 +1,7 @@
-
 {{ config(
-    materialized='table',
+    materialized='view',
     schema='individus',
-    alias='perception_agg'
+    alias='join_perception'
 ) }}
 
 SELECT

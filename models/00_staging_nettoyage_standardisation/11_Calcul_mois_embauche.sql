@@ -1,3 +1,6 @@
+{{ config(
+    materialized='view'
+) }}
 WITH calcul_base AS (       --  --> 1ère requête pour calculer l'ancienneté
     SELECT
         employee_id,

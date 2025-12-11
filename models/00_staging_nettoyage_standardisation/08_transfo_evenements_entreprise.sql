@@ -1,3 +1,6 @@
+{{ config(
+    materialized='view'
+) }}
 SELECT
     CAST(date AS DATE) AS date_evenement,
     TRIM(type) AS type_evenement,

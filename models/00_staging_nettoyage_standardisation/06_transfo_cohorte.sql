@@ -1,3 +1,6 @@
+{{ config(
+    materialized='view'
+) }}
 SELECT
     TRIM(mois_embauche) AS mois_embauche,
     CAST(annee_embauche AS INT64) AS annee_embauche,

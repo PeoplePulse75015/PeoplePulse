@@ -1,3 +1,6 @@
+{{ config(
+    materialized='view'
+) }}
 SELECT
     TRIM(employee_id) AS employee_id,
     CAST(jours_absents_12mois AS INT64) AS jours_absents_12mois,

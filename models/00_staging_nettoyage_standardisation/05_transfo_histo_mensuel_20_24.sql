@@ -1,3 +1,6 @@
+{{ config(
+    materialized='view'
+) }}
 SELECT
     TRIM(mois) AS mois_histo,
     CAST(annee AS INT64) AS annee,

@@ -1,3 +1,7 @@
+{{ config(
+    materialized='view'
+) }}
+
 SELECT
     TRIM(employee_id) AS employee_id, -- --> TRIM pour gérer les espaces inutiles
     CAST(age AS INT64) AS age,        -- --> CAST pour transformer les String reçus en un type désiré : BigQuery accepte float et int avec 64 derrière

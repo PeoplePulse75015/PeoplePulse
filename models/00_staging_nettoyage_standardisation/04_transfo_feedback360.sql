@@ -1,3 +1,6 @@
+{{ config(
+    materialized='view'
+) }}
 SELECT
     TRIM(employee_id) AS employee_id,
     CAST(feedback_collegues AS FLOAT64) AS feedback_collegues,

@@ -1,10 +1,8 @@
-
 {{ config(
-    materialized='table',
+    materialized='view',
     schema='entreprise',
-    alias='historique_contexte_agg'
+    alias='join_historique_contexte'
 ) }}
-
 
 SELECT
  t05.mois_histo AS mois_reference,
@@ -27,9 +25,9 @@ SELECT
  t05.ca_moyen_employe_annuel,
  t05.perte_productivite_pct,
  t05.perte_ca_estimee,
- -- t07.mois_contexte, --> redondance des données
- -- t07.trimestre_x, --> redondance des données
- -- t07.trimestre_y, --> redondance des données
+ t07.mois_contexte, --> redondance des données, retirées dans le marts
+ t07.trimestre_x, --> redondance des données, retirées dans le marts
+ t07.trimestre_y, --> redondance des données, retirées dans le marts
  t07.taux_chomage,
  t07.croissance_pib_trim,
  t07.indice_confiance,

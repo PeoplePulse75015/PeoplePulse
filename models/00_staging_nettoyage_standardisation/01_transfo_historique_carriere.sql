@@ -1,3 +1,7 @@
+{{ config(
+    materialized='view'
+) }}
+
 SELECT
     TRIM(employee_id) AS employee_id,
     CAST(nb_promotions AS INT64) AS nb_promotions,

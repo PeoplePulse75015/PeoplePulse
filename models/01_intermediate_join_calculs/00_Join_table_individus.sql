@@ -1,0 +1,71 @@
+{{ config(
+    materialized='view',
+    schema='individus',
+    alias='join_individus'
+) }}
+
+
+SELECT
+ t00.employee_id,
+ t00.age,
+ t00.departement,
+ t00.poste,
+ t00.niveau,
+ t11.date_embauche,
+ t00.anciennete_annees,
+ t00.salaire_annuel,
+ t00.performance,
+ t00.est_parti,
+ t00.statut,
+ CASE 
+        -- =======================================================
+        -- RANG 1 : Directeur (Sommet de la hiérarchie)
+        -- =======================================================
+        WHEN LOWER(t00.poste) LIKE 'directeur' THEN 1
+
+        -- =======================================================
+        -- RANG 2 : Direction Adjointe / C-Level / VP (Juste en dessous)
+        -- =======================================================
+        WHEN LOWER(t00.poste) LIKE '%directeur adjoint%' THEN 2
+        WHEN LOWER(t00.poste) LIKE '%c-level%' THEN 3
+        WHEN LOWER(t00.poste) LIKE '%vp%' THEN 3
+        WHEN LOWER(niveau) = 'direction' THEN 3 -- Capture toute autre "Direction" non nommée
+
+        -- =======================================================
+        -- RANG 3 : SENIOR / Manager
+        -- =======================================================
+        WHEN LOWER(t00.poste) = 'manager' THEN 4
+        WHEN LOWER(t00.niveau) = 'senior' THEN 5
+        WHEN LOWER(t00.poste) LIKE '%senior%' THEN 5
+        
+        -- =======================================================
+        -- RANG 4 : CONFIRMÉ, JUNIOR ou non défini
+        -- =======================================================
+        WHEN LOWER(t00.niveau) = 'confirmé' THEN 6
+        WHEN LOWER(t00.niveau) = 'junior' THEN 7
+        ELSE 8
+    END AS niveau_hierarchie,
+ t00.date_depart,
+ t00.mois_depart,
+ t01.nb_promotions,
+ t01.nb_mobilites_internes,
+ t01.mois_depuis_derniere_promo,
+ t01.progression_salariale_pct, 
+ t01.nb_formations_suivies,
+ -- t01.stagnation_detectee, --> valeur 0 partout, donc non incluse
+ t01.changement_manager_12mois,
+ t01.demande_mutation_refusee,
+ t01.potentiel_identifie,
+ t02.jours_absents_12mois,
+ -- t02.frequence_absences, --> donnée considérée comme mal collectée, décidée comme manquante (décision du 08/12)
+ t02.taux_absenteisme,
+ t02.motif_principal,
+ t02.absences_longue_duree
+FROM {{ ref('00_transfo_donnees_rh') }} AS t00
+INNER JOIN {{ ref('11_Calcul_mois_embauche') }} AS t11 ON t00.employee_id = t11.employee_id
+INNER JOIN {{ ref('01_transfo_historique_carriere') }} AS t01 ON t00.employee_id = t01.employee_id
+INNER JOIN {{ ref('02_transfo_absenteisme') }} AS t02 ON t00.employee_id = t02.employee_id
+
+
+
+

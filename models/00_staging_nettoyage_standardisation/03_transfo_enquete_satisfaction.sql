@@ -1,3 +1,6 @@
+{{ config(
+    materialized='view'
+) }}
 SELECT
     TRIM(employee_id) AS employee_id,
     CAST(sentiment_global AS FLOAT64) AS sentiment_global,

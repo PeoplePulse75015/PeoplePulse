@@ -1,8 +1,7 @@
-
 {{ config(
-    materialized='table',
+    materialized='view',
     schema='entreprise',
-    alias='evenements_agg'
+    alias='union_evenements'
 ) }}
 
 --  --> Ici, pas de JOIN mais un UNION ALL car peu d'évènements avec des dates qui diffèrent d'une table à l'autre

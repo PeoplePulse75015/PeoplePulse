@@ -1,8 +1,8 @@
 
 {{ config(
     materialized='table',
-    schema='entreprise',
-    alias='cohortes_agg'
+    schema='peoplepulse',
+    alias='cohortes'
 ) }}
 
 

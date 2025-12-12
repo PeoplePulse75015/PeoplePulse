@@ -20,5 +20,6 @@ SELECT
       jours_absents_12mois, 
       nps_employeur,
       feedback_collegues,
-      feedback_managers
+      feedback_managers,
+      est_parti
 FROM {{ ref('00_Table_individus') }}

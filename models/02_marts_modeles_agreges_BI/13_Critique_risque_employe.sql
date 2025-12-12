@@ -14,3 +14,4 @@ WHERE
     AND mois_depuis_derniere_promo >= 12
     AND jours_absents_12mois >= 20
     AND nps_employeur <=6
+    AND est_parti = FALSE

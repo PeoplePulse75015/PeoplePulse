@@ -17,5 +17,8 @@ SELECT
       ) / 7.0,2) AS satisfaction_moyenne,
       date_enquete,
       mois_depuis_derniere_promo,
-      jours_absents_12mois
+      jours_absents_12mois, 
+      nps_employeur,
+      feedback_collegues,
+      feedback_managers
 FROM {{ ref('00_Table_individus') }}

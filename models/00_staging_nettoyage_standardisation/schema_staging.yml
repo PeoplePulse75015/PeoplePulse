@@ -6,34 +6,34 @@ models:
   # =========================================================
 
   - name: 00_transfo_donnees_rh 
-    description: "Données de base RH nettoyées (âge, poste, salaire). La clé primaire (PK) est l'ID de l'employé."
+    description: '{{doc("doc_00_transfo_donnees_rh") }}'
     columns:
       - name: employee_id
-        description: "Clé primaire unique de l'employé."
+        description: '{{doc("cle_00_transfo_donnees_rh") }}'
         tests:
           - unique
           - not_null
 
   - name: 01_transfo_historique_carriere 
-    description: "Historique des promotions, mobilités et évolutions salariales."
+    description: '{{doc("doc_01_transfo_historique_carriere") }}'
     columns:
       - name: employee_id
-        description: "Clé primaire unique de l'employé."
+        description: '{{doc("cle_01_transfo_historique_carriere") }}'
         tests:
           - unique
           - not_null
 
   - name: 02_transfo_absenteisme 
-    description: "Données d'absentéisme par employé."
+    description: '{{doc("doc_02_transfo_absenteisme") }}'
     columns:
       - name: employee_id
-        description: "Clé primaire unique de l'employé."
+        description: '{{doc("cle_02_transfo_absenteisme") }}'
         tests:
           - unique
           - not_null
 
   - name: 03_transfo_enquete_satisfaction # (clé composée pour 1 employé pour 1 date)
-    description: "Scores d'enquêtes de satisfaction (sentiment, NPS). Une enquête par employé par date."
+    description: '{{doc("doc_03_transfo_enquete_satisfaction") }}'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -41,7 +41,7 @@ models:
             - date_enquete # 1 employé ne peut avoir qu'1 réponse par date
 
   - name: 04_transfo_feedback360 # (clé composée pour 1 employé pour 1 date)
-    description: "Scores de feedback 360 (compétences, leadership) par évaluation."
+    description: '{{doc("doc_04_transfo_feedback360") }}'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -53,46 +53,46 @@ models:
   # =========================================================
   
   - name: 05_transfo_histo_mensuel_20_24 
-    description: "Métriques macro RH et coûts (effectif, turnover) agrégées au mois."
+    description: '{{doc("doc_05_transfo_histo_mensuel_20_24") }}'
     columns:
       - name: mois_histo 
-        description: "Clé primaire unique par mois/année."
+        description: '{{doc("cle_05_transfo_histo_mensuel_20_24") }}'
         tests:
           - unique
           - not_null
 
   - name: 06_transfo_cohorte
-    description: "Taux de rétention par cohorte d'embauche."
+    description: '{{doc("doc_06_transfo_cohorte") }}'
     columns:
       - name: mois_embauche 
-        description: "Clé primaire unique (mois d'embauche)."
+        description: '{{doc("cle_06_transfo_cohorte") }}'
         tests:
           - unique
           - not_null
   
   - name: 07_transfo_donnees_contextuelles
-    description: "Données macroéconomiques et marché du travail liées à la période."
+    description: '{{doc("doc_07_transfo_donnees_contextuelles") }}'
     columns:
       - name: mois_contexte 
-        description: "Clé primaire unique basée sur le mois d'observation."
+        description: '{{doc("cle_07_transfo_donnees_contextuelles") }}'
         tests:
           - unique
           - not_null
 
   - name: 08_transfo_evenements_entreprise 
-    description: "Événements internes structurants de l'entreprise (ex: fusion, acquisition, changement de politique)."
+    description: '{{doc("doc_08_transfo_evenements_entreprise") }}'
     columns:
       - name: date_evenement 
-        description: "Clé primaire unique (date de l'événement)."
+        description: '{{doc("cle_08_transfo_evenements_entreprise") }}'
         tests:
           - unique
           - not_null
 
   - name: 09_transfo_evenements_historiques 
-    description: "Impacts agrégés des événements historiques sur le moral/turnover."
+    description: '{{doc("doc_09_transfo_evenements_historiques") }}'
     columns:
       - name: date_evenement_historique
-        description: "Date de l'événement historique."
+        description: '{{doc("cle_09_transfo_evenements_historiques") }}'
         tests:
           - unique
           - not_null

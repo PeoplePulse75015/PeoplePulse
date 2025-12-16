@@ -1,0 +1,36 @@
+version: 2
+
+models:
+
+  - name: 00_Join_table_individus 
+    description: "Join des tables donnees_rh, historique carriere, absenteisme."
+    columns:
+      - name: employee_id
+        description: "Clé primaire unique de l'employé."
+        tests:
+          - unique
+          - not_null
+
+  - name: 01_Join_table_perception 
+    description: "Join des enquêtes satisfaction et feedback 360."
+    columns:
+      - name: employee_id
+        description: "Clé primaire unique de l'employé."
+        tests:
+          - unique
+          - not_null
+
+  - name: 02_Join_table_historique_contexte 
+    description: "Join des tables historique mensuel et données contextuelles."
+    columns:
+      - name: mois_reference
+        description: "Clé primaire unique sur la date mois-annee"
+        tests:
+          - unique
+          - not_null
+
+  - name: 03_Union_evenements 
+    description: "Union des tables évènements avec architecture ."
+    columns:
+      - name: date_evenement
+        description: "Clé primaire unique sur la date."

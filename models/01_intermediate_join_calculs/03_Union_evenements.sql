@@ -19,7 +19,7 @@ SELECT
 FROM {{ ref('08_transfo_evenements_entreprise') }} 
 UNION ALL
 SELECT
- date_evenement_historique,
+ date_evenement_historique AS date_evenement,
  mois_evenement_historique,
  type_evenement_historique,
  --annee_evenement_historique, --> donnée exclue, connue grâce aux autres dates

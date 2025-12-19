@@ -3,10 +3,26 @@
 ) }}
 
 SELECT
-    TRIM(employee_id) AS employee_id, -- --> TRIM pour gérer les espaces inutiles
-    CAST(age AS INT64) AS age,        -- --> CAST pour transformer les String reçus en un type désiré : BigQuery accepte float et int avec 64 derrière
-    TRIM(departement) AS departement,
-    TRIM(poste) AS poste,
+    TRIM(employee_id) AS employee_id,
+    CAST(age AS INT64) AS age,         -- Ligne qui doit se terminer par la virgule
+    TRIM( 
+        REPLACE(
+            REPLACE(
+                REPLACE(departement, 'Ã©', 'é'),
+                'Ã ', 'à'
+            ),
+            'Ã¨', 'è'
+        )
+    ) AS departement,
+        TRIM(
+        REPLACE(
+            REPLACE(
+                REPLACE(poste, 'Ã©', 'é'),
+                'Ã ', 'à'
+            ),
+            'Ã¨', 'è'
+        )
+    ) AS poste,
     TRIM(niveau) AS niveau,
     CAST(anciennete_annees AS FLOAT64) AS anciennete_annees,
     CAST(salaire_annuel AS INT64) AS salaire_annuel,

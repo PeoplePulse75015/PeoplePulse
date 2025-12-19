@@ -14,9 +14,17 @@ SELECT
  t11.date_embauche,
  t00.anciennete_annees,
  t00.salaire_annuel,
+-- Médianes
+PERCENTILE_CONT(CAST(t00.salaire_annuel AS FLOAT64), 0.5) OVER() AS salaire_median,
+ PERCENTILE_CONT(CAST(t00.salaire_annuel AS FLOAT64), 0.5) OVER (PARTITION BY t00.departement) AS salaire_median_departement,
+ PERCENTILE_CONT(CAST(t00.salaire_annuel AS FLOAT64), 0.5) OVER (PARTITION BY t00.departement, t00.niveau) AS salaire_median_departement_niveau,
+ -- Moyennes
+ ROUND(AVG(t00.salaire_annuel) OVER (PARTITION BY t00.departement),2) AS salaire_moyen_departement,
+ ROUND(AVG(t00.salaire_annuel) OVER (PARTITION BY t00.departement, t00.niveau),2) AS salaire_moyen_departement_niveau,
  t00.performance,
  t00.est_parti,
  t00.statut,
+ -- Calcul d'un niveau de hiérarchie
  CASE 
         -- =======================================================
         -- RANG 1 : Directeur (Sommet de la hiérarchie)

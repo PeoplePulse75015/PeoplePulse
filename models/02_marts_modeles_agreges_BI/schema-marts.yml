@@ -1,0 +1,80 @@
+version: 2
+
+models:
+
+# ==================================================================
+# Création des tables finales à utiliser (code 0x.xxx)
+# ==================================================================
+
+  - name: 00_Table_individus 
+    description: "Creation de la table qui intègre toutes les données des individus."
+    columns:
+      - name: employee_id
+        description: "Clé primaire unique de l'employé."
+        tests:
+          - unique
+          - not_null
+
+  - name: 01_Table_Historique_Contexte 
+    description: "Creation de la table qui intègre toutes les données des individus."
+    columns:
+      - name: mois_reference
+        description: "Clé primaire unique mois-année."
+        tests:
+          - unique
+          - not_null
+
+  - name: 02_Table_cohortes 
+    description: "Creation de la table qui intègre toutes les données des individus."
+    columns:
+      - name: mois_embauche
+        description: "Clé primaire unique mois-année."
+        tests:
+          - unique
+          - not_null
+
+  - name: 03.Table_evenements 
+    description: "Creation de la table qui intègre toutes les données des individus."
+    columns:
+      - name: date_evenement
+        description: "Clé primaire uunique mois-année."
+        tests:
+          - unique
+          - not_null
+
+  - name: 04_table_jonctions 
+    description: "Table de faits : Snapshot mensuel de l'activité des employés."
+    
+    # === Test de clé composée (DOUBLE CLÉ) ===
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            # Les deux colonnes qui forment une clé unique
+            - employee_id
+            - mois_reference_string # Clé YYYY-MM
+            
+    columns:     
+      - name: employee_id
+        description: "Clé de l'employé."
+        tests:
+          - not_null 
+          
+      - name: mois_reference_string
+        description: "Mois de référence du snapshot (YYYY-MM)."
+        tests:
+          - not_null
+          
+      - name: cle_snapshot_mensuel
+        description: "Clé hashée (employee_id + mois_reference) générée par MD5."
+        tests:
+          - unique # La clé Hachée doit être unique
+          - not_null
+
+
+
+# ==================================================================
+# Création des vues (code 1x.xxx et supérieur)
+# ==================================================================
+
+
+

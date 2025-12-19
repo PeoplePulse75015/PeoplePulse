@@ -1,5 +1,6 @@
 WITH calculs_intermediaires AS (
     SELECT
+        mois_reference,
         ca_moyen_employe_annuel,
         effectif,
         cout_recrutement_total,
@@ -14,6 +15,7 @@ WITH calculs_intermediaires AS (
 )
 
 SELECT
+    mois_reference,
     CA_mensuel_calcule, -- Le CA mensuel est maintenant une colonne disponible
     effectif,
     cout_recrutement_total,

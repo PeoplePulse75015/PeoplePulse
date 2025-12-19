@@ -15,6 +15,7 @@ SELECT
  t00.anciennete_annees,
  t00.salaire_annuel,
 -- Médianes
+PERCENTILE_CONT(CAST(t00.salaire_annuel AS FLOAT64), 0.5) OVER() AS salaire_median,
  PERCENTILE_CONT(CAST(t00.salaire_annuel AS FLOAT64), 0.5) OVER (PARTITION BY t00.departement) AS salaire_median_departement,
  PERCENTILE_CONT(CAST(t00.salaire_annuel AS FLOAT64), 0.5) OVER (PARTITION BY t00.departement, t00.niveau) AS salaire_median_departement_niveau,
  -- Moyennes
